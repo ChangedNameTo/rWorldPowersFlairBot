@@ -76,11 +76,12 @@ class FlairBot:
                 if author.lower() in (user.lower() for user in self.BLACKLIST):
                     continue
                 content = str(pm.body)  # Content of the PM
-                newflair = content[:4]# Substrings the PM to get flair only
+                index = content.index(":")
+                newflair = content[:index].strip()# Substrings the PM to get flair only
                 subreddit = self.r.get_subreddit(self.TARGET_SUB)
                 if newflair in flairs:
                     # Get the flair text that corresponds with the class name
-                    flair_text = content[5:]
+                    flair_text = content[index + 1:].strip()
                     subreddit.set_flair(author, flair_text, newflair)
                     if self.LOGGING:
                         self.log(author, content, flair_text, newflair)
