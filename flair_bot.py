@@ -71,10 +71,10 @@ class FlairBot:
     def process_pms(self):
         for pm in self.pms:
             if str(pm.subject) == self.SUBJECT:
-                author = str(pm.author)  # Author of the PM
+                author = pm.author.name  # Author of the PM
                 if author.lower() in (user.lower() for user in self.BLACKLIST):
                     continue
-                content = str(pm.body)  # Content of the PM
+                content = pm.body.name  # Content of the PM
                 index = content.find(":")
                 if index != -1:
                     continue
