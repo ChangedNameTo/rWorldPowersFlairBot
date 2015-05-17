@@ -20,7 +20,6 @@ class FlairBot:
 
     # User agent that PRAW uses to identify your bot to reddit
     USER_AGENT = 'ubuntu:thealpacalypse.me:v1 (run by /u/tehalpacalypse)'
-
     # User name/password of the account that the bot will run through
     USER_NAME = ''
     PASSWD = ''
@@ -70,22 +69,32 @@ class FlairBot:
             self.process_pms()
 
     def process_pms(self):
+        i = 0
         for pm in self.pms:
-            if str(pm.subject) == self.SUBJECT:
-                author = str(pm.author)  # Author of the PM
-                if author.lower() in (user.lower() for user in self.BLACKLIST):
-                    continue
-                content = str(pm.body)  # Content of the PM
-                index = content.index(":")
-                newflair = content[:index].strip()# Substrings the PM to get flair only
-                subreddit = self.r.get_subreddit(self.TARGET_SUB)
-                if newflair in flairs:
-                    # Get the flair text that corresponds with the class name
-                    flair_text = content[index + 1:].strip()
-                    subreddit.set_flair(author, flair_text, newflair)
-                    if self.LOGGING:
-                        self.log(author, content, flair_text, newflair)
-                pm.mark_as_read()  # Mark processed PM as read
+            print i
+            try:
+                i = i + 1
+                if str(pm.subject) == self.SUBJECT:
+                    author = str(pm.author)  # Author of the PM
+                    if author.lower() in (user.lower() for user in self.BLACKLIST):
+                        continue
+                    content = str(pm.body)  # Content of the PM
+                    index = content.index(":")
+                    newflair = content[:index].strip()# Substrings the PM to get flair only
+                    subreddit = self.r.get_subreddit(self.TARGET_SUB)
+                    if newflair in flairs:
+                        # Get the flair text that corresponds with the class name
+                        flair_text = content[index + 1:].strip()
+                        subreddit.set_flair(author, flair_text, newflair)
+                        if self.LOGGING:
+                            self.log(author, content, flair_text, newflair)
+                    pm.mark_as_read()  # Mark processed PM as read
+            except UnicodeEncodeError:
+                print "UnicodeEncodeError on PM #", i, " avoided"
+                pm.mark_as_unread()
+            except ValueError:
+                print "Caught ValueError"
+                pm.mark_as_unread()
 
     def log(self, author, content, flair_text, newflair):
         with open('log.txt', 'a') as logfile:
