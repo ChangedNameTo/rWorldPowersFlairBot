@@ -3,6 +3,7 @@
 import praw
 import sys
 import os
+from passwords import *
 from time import gmtime, strftime
 try:
     from flair_list import flairs
@@ -21,8 +22,8 @@ class FlairBot:
     # User agent that PRAW uses to identify your bot to reddit
     USER_AGENT = 'ubuntu:thealpacalypse.me:v1 (run by /u/tehalpacalypse)'
     # User name/password of the account that the bot will run through
-    USER_NAME = ''
-    PASSWD = ''
+    USER_NAME = hiduser
+    PASSWD = hidpassword
 
     # Blacklist for users abusing the flair system
     BLACKLIST = ['sampleuser', 'sampleUSER2']
