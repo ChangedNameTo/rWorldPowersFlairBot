@@ -3,7 +3,7 @@
 import praw
 import sys
 import os
-from passwords import hiduser, hidpassword
+from passwords import *
 from time import gmtime, strftime
 try:
     from flair_list import flairs
