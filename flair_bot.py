@@ -3,7 +3,7 @@
 import praw
 import sys
 import os
-from passwords import *
+from passwords import hiduser, hidpassword
 from time import gmtime, strftime
 try:
     from flair_list import flairs
@@ -78,8 +78,8 @@ class FlairBot:
                 content = str(pm.body)  # Content of the PM
                 index = content.find(":")
                 if index != -1:
-                newflair = content[:index].strip()# Substrings the PM to get flair only
-                subreddit = self.r.get_subreddit(self.TARGET_SUB)
+                    newflair = content[:index].strip()# Substrings the PM to get flair only
+                    subreddit = self.r.get_subreddit(self.TARGET_SUB)
                 if newflair in flairs:
                     # Get the flair text that corresponds with the class name
                     flair_text = content[index + 1:].strip()
